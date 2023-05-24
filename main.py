@@ -2,9 +2,8 @@ from database import Database
 from finder import Finder
 from calculator import Calculator
 from main_window import Ui_mainWindow
+from PyQt6 import QtWidgets, QtGui, QtCore
 import os
-from PyQt6 import QtWidgets
-
 
 # nastavení cesty k databázi
 database_path = os.path.abspath("database.db")
@@ -15,14 +14,16 @@ lego_database.connect()
 
 # vytvoření instance třídy Finder, do konstruktoru přidána jako argument instance třídy Database
 finder = Finder(lego_database)
+# dostane z internetu aktuální cenu produktů a uloží je do databáze
 finder.find()
 
 # vytvoření instance třídy Calculator, do konstruktoru přidána jako argument instance třídy Database
 calculator = Calculator(lego_database)
 
 # Vytvoření instance třídy Ui_mainWindow
-main_window = Ui_mainWindow(lego_database, calculator)
+main_window = Ui_mainWindow(lego_database, calculator, finder)
 
+# spuštění výpočtů
 calculator.calculate_difference()
 calculator.calculate_total_price()
 calculator.caculate_price_increase()

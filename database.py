@@ -42,3 +42,5 @@ class Database:
             (cislo_setu, nazev_setu, pocet_kusu, datum_nakupu, porizovaci_cena, url, id))
 
 
+
+

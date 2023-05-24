@@ -1,15 +1,16 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox
+import keyboard
 from edit_window import Ui_edit_window
 from add_window import Ui_add_window
-from PyQt6.QtGui import QFont
 from remove_item_dialog import RemoveDialog
 
 
 class Ui_mainWindow(object):
-    def __init__(self, database, calculator):
+    def __init__(self, database, calculator, finder):
         self.database = database
         self.calculator = calculator
+        self.finder = finder
 
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
@@ -122,7 +123,7 @@ class Ui_mainWindow(object):
 "    font-size: 14px;\n"
 "    padding-left: 0px;\n"
 "}")
-        # po kliknutí na tlačítko Odstranit položku se zobrazí remove_item_window:
+        # po kliknutí na tlačítko Odstranit položku se zobrazí remove_item_dialog:
         self.odstranit_polozku.clicked.connect(self.show_remove_dialog)
 
         self.textBrowser_9.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
@@ -234,7 +235,7 @@ class Ui_mainWindow(object):
 "</style></head><body style=\" font-family:\'Segoe UI\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt;\">LegoMakesMoney</span></p></body></html>"))
 
-    # dostane url z databáze
+    # dostane url produktu z databáze na základě id
     def get_url(self, id):
         url = "SELECT url FROM lego_sets WHERE id = ?"
         result = self.database.cursor.execute(url, (id,)).fetchone()
@@ -243,7 +244,7 @@ class Ui_mainWindow(object):
             return url
         return None
 
-    # po kliknutí na tlacitko Upravit položku se otevře nové okno s editací položky
+    # po kliknutí na tlacitko Upravit položku se otevře editační okno
     def show_edit_window(self):
         # získání informací o označené položce v tabulce
         current_row = self.tableWidget.currentRow()
@@ -255,7 +256,7 @@ class Ui_mainWindow(object):
         # pro vyhledání správného url z databáze se z tabulky vytáhne id položky a to je předáno jako parametr metodě get_url
         id_item = self.tableWidget.item(current_row, 0)
 
-        # ověření, zda je označený řádek prázdný. program se vrátí bez provedení dalšího kódu
+        # ověření, zda je označený řádek prázdný. Pokud ano program se vrátí bez provedení dalšího kódu
         if id_item is None or id_item.text() == "":
                 return
 
@@ -289,7 +290,7 @@ class Ui_mainWindow(object):
         self.edit_window.show()
 
 
-    # po kliknutí na tlacitko Upravit položku se otevře nové okno pro vložení nové položky
+    # po kliknutí na tlacitko Přidat položku se otevře nové okno pro vložení nové položky
     def show_add_window(self):
         # Vytvoření instance Ui_add_window
         self.add_window = QtWidgets.QDialog()
@@ -297,7 +298,22 @@ class Ui_mainWindow(object):
         self.add_ui.setupUi(self.add_window)
         self.add_window.show()
 
+    # po kliknutí na Odstranit položku se otevře dialog
     def show_remove_dialog(self):
+        # získání informací o označené položce v tabulce
+        current_row = self.tableWidget.currentRow()
+
+        # pokud není označen žádný řádek, program se vrátí bez provedení dalšího kódu
+        if current_row == -1:
+            return
+
+        # pro vyhledání správného url z databáze se z tabulky vytáhne id položky a to je předáno jako parametr metodě get_url
+        id_item = self.tableWidget.item(current_row, 0)
+
+        # ověření, zda je označený řádek prázdný. Pokud ano program se vrátí bez provedení dalšího kódu
+        if id_item is None or id_item.text() == "":
+            return
+
         # Vytvoření instance třídy RemoveDialog
         dialog = RemoveDialog()
 
@@ -308,22 +324,15 @@ class Ui_mainWindow(object):
         if result == QMessageBox.StandardButton.Yes:
             self.remove_item()
 
-    # metoda odstraní položku z databáze
+
+    # metoda odstraní položku z databáze a z tabulky
     def remove_item(self):
         # získání informací o označené položce v tabulce
         current_row = self.tableWidget.currentRow()
 
-        # pokud není označen žádný řádek, program se vrátí bez provedení dalšího kódu
-        if current_row == -1:
-            return
-
         # pro vyhledání správného url z databáze se z tabulky vytáhne id položky a to je předáno jako parametr metodě get_url
         id_item = self.tableWidget.item(current_row, 0)
         id = int(id_item.text())
-
-        # ověření, zda je označený řádek prázdný. program se vrátí bez provedení dalšího kódu
-        if id_item is None or id_item.text() == "":
-            return
 
         # Odstranění položky z databáze
         self.database.cursor.execute("DELETE FROM lego_sets WHERE id = ?", (id,))
@@ -331,4 +340,14 @@ class Ui_mainWindow(object):
 
         # Odstranění položky z tabulky
         self.tableWidget.removeRow(current_row)
+
+    def press_F5_update_data(self):
+        self.finder.find()
+        self.calculator.calculate_difference()
+        self.calculator.calculate_total_price()
+        self.calculator.caculate_price_increase()
+
+
+
+
 
