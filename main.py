@@ -20,13 +20,13 @@ finder.find()
 # vytvoření instance třídy Calculator, do konstruktoru přidána jako argument instance třídy Database
 calculator = Calculator(lego_database)
 
-# Vytvoření instance třídy Ui_mainWindow
-main_window = Ui_mainWindow(lego_database, calculator, finder)
-
 # spuštění výpočtů
 calculator.calculate_difference()
 calculator.calculate_total_price()
 calculator.caculate_price_increase()
+
+# Vytvoření instance třídy Ui_mainWindow
+main_window = Ui_mainWindow(lego_database, calculator, finder)
 
 # Spuštění hlavního okna main_window
 if __name__ == "__main__":

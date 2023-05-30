@@ -341,11 +341,6 @@ class Ui_mainWindow(object):
         # Odstranění položky z tabulky
         self.tableWidget.removeRow(current_row)
 
-    def press_F5_update_data(self):
-        self.finder.find()
-        self.calculator.calculate_difference()
-        self.calculator.calculate_total_price()
-        self.calculator.caculate_price_increase()
 
 
 
