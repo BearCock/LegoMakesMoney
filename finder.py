@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-
 class Finder:
     def __init__(self, database):
         self.database = database
@@ -57,7 +56,6 @@ class Finder:
 
             # uložení ceny do databáze pomocí metody ze třídy Database
             print(result)
-            self.database.update_data_aktualni_cena(result[0], id_lego_set)
-
+            self.database.update_data_aktualni_cena(result[0], id)
 
 
