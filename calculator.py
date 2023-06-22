@@ -54,7 +54,7 @@ class Calculator:
 
         self.database.update_total_price(total_price)
 
-    def caculate_price_increase(self):
+    def calculate_price_increase(self):
         total_price = self.database.cursor.execute("SELECT celkova_cena_portfolia FROM portfolio_data").fetchone()[0]
         difference_price = self.database.cursor.execute("SELECT rozdil_cen, pocet_kusu FROM lego_sets").fetchall()
 

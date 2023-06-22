@@ -151,7 +151,7 @@ class Ui_mainWindow(object):
 
         # výpis dat do widgetů
         celkova_cena_portfolia = self.database.cursor.execute("SELECT celkova_cena_portfolia FROM portfolio_data").fetchone()[0]
-        self.textBrowser_2.setText(f"Celková cena portfolia: {celkova_cena_portfolia},- Kč")
+        self.textBrowser_2.setText(f"Celková pořizovací cena portfolia: {celkova_cena_portfolia},- Kč")
         # vystředí text horizontálně
         self.textBrowser_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
@@ -185,16 +185,16 @@ class Ui_mainWindow(object):
         item.setText(_translate("mainWindow", "ID"))
 
         item = self.tableWidget.horizontalHeaderItem(1)
-        self.tableWidget.setColumnWidth(1, 70)
+        self.tableWidget.setColumnWidth(1, 63)
         item.setText(_translate("mainWindow", "Číslo setu"))
 
         item = self.tableWidget.horizontalHeaderItem(2)
         # upravuje šířku sloupce tabulky
-        self.tableWidget.setColumnWidth(2, 295)
+        self.tableWidget.setColumnWidth(2, 292)
         item.setText(_translate("mainWindow", "Název setu"))
 
         item = self.tableWidget.horizontalHeaderItem(3)
-        self.tableWidget.setColumnWidth(3, 70)
+        self.tableWidget.setColumnWidth(3, 68)
         item.setText(_translate("mainWindow", "Počet kusů"))
 
         item = self.tableWidget.horizontalHeaderItem(4)
@@ -207,11 +207,11 @@ class Ui_mainWindow(object):
 
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("mainWindow", "Aktuální cena"))
-        self.tableWidget.setColumnWidth(6, 85)
+        self.tableWidget.setColumnWidth(6, 82)
 
         item = self.tableWidget.horizontalHeaderItem(7)
         item.setText(_translate("mainWindow", "Rozdíl ceny"))
-        self.tableWidget.setColumnWidth(7, 75)
+        self.tableWidget.setColumnWidth(7, 73)
 
 
         self.pridat_polozku.setText(_translate("mainWindow", "Přidat položku"))

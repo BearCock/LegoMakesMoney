@@ -5,28 +5,38 @@ from main_window import Ui_mainWindow
 from PyQt6 import QtWidgets, QtGui, QtCore
 import os
 
-# nastavení cesty k databázi
+# Nastavení cesty k databázi
 database_path = os.path.abspath("database.db")
-# vytvoření instance databáze
+# Vytvoření instance databáze
 lego_database = Database(database_path)
-# připojení k databázi
+# Připojení k databázi
 lego_database.connect()
 
-# vytvoření instance třídy Finder, do konstruktoru přidána jako argument instance třídy Database
+# Vytvoření instance třídy Finder a předání instance třídy Database jako argument konstruktoru
 finder = Finder(lego_database)
-# dostane z internetu aktuální cenu produktů a uloží je do databáze
+# Získání aktuálních cen produktů z internetu a uložení do databáze
 finder.find()
 
-# vytvoření instance třídy Calculator, do konstruktoru přidána jako argument instance třídy Database
+# Vytvoření instance třídy Calculator a předání instance třídy Database jako argument konstruktoru
 calculator = Calculator(lego_database)
-
-# spuštění výpočtů
-calculator.calculate_difference()
-calculator.calculate_total_price()
-calculator.caculate_price_increase()
 
 # Vytvoření instance třídy Ui_mainWindow
 main_window = Ui_mainWindow(lego_database, calculator, finder)
+
+# Spuštění výpočtů
+calculator.calculate_difference()
+calculator.calculate_total_price()
+calculator.calculate_price_increase()
+
+
+#shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key.Key_F5), main_window)
+
+"""# Vytvoření zkratky pro stisk klávesy F5
+shortcut = QtGui.QShortcutEvent
+shortcut.activated.connect(finder.find)
+shortcut.activated.connect(calculator.calculate_difference)
+shortcut.activated.connect(calculator.calculate_total_price)
+shortcut.activated.connect(calculator.calculate_price_increase)"""
 
 # Spuštění hlavního okna main_window
 if __name__ == "__main__":
@@ -36,5 +46,3 @@ if __name__ == "__main__":
     main_window.setupUi(mainWindow)
     mainWindow.show()
     sys.exit(app.exec())
-
-

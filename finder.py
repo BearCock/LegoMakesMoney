@@ -23,14 +23,14 @@ class Finder:
             url = self.database.cursor.execute("SELECT url FROM lego_sets WHERE id=?", (id,)).fetchone()[0]
             response = requests.get(url)
 
-        # uloží obsah HTML z proměnné " response" do proměnné html_content
+            # uloží obsah HTML z proměnné " response" do proměnné html_content
             html_content = response.text
 
-        # vytvoří "BeautifulSoup" objekt z HTML obsahu uloženého v proměnné "html_content"
+            # vytvoří "BeautifulSoup" objekt z HTML obsahu uloženého v proměnné "html_content"
             soup = BeautifulSoup(html_content, 'html.parser')
 
-        # tato část kódu najde všechny výskyty tagů s třídou "c-offer__price" a uloží je do seznamu "find_price_tags"
-        # je to nutné kvůli tomu, že ne vždy se ze stránky stáhnou data o ceně 1. položky, ale kolikrát to bere top_produkt
+            # tato část kódu najde všechny výskyty tagů s třídou "c-offer__price" a uloží je do seznamu "find_price_tags"
+            # je to nutné kvůli tomu, že ne vždy se ze stránky stáhnou data o ceně 1. položky, ale kolikrát to bere top_produkt
             find_price_tags = soup.find_all('div', {'class': 'c-offer__price'})
 
             """  
@@ -43,13 +43,18 @@ class Finder:
             ,: shoduje se s čárkou
             .: shoduje se s tečkou
              """
+            # vypíše hlášení o splnění požadavku
+            print("Request processed")
+
+
             sorted_price_items = sorted(find_price_tags,
                                     key=lambda tag: float(re.sub(r'[^\d,.]', '', tag.text).replace(',', '.')))
 
-        # vybere 1. položku ze seznamu, tedy položku s nejnižší cenou
+
+            # vybere 1. položku ze seznamu, tedy položku s nejnižší cenou
             lowest_item_price = sorted_price_items[0].text
 
-            # k url může vypsat id položky
+            # pokud je několik stejných url v datábazi, vyhledá pouze první a k ostatním položkám se stejným url přiřadí url s prvním id
             id_lego_set = self.database.cursor.execute("SELECT id FROM lego_sets WHERE url=?", (url,)).fetchone()[0]
 
             result = (float(re.sub(r'[^\d,.]', '', lowest_item_price).replace(',', '.')), id)
