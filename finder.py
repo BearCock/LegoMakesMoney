@@ -59,8 +59,11 @@ class Finder:
 
             result = (float(re.sub(r'[^\d,.]', '', lowest_item_price).replace(',', '.')), id)
 
+            # blok pro vypsání hlášení do konzole
+            price = (float(re.sub(r'[^\d,.]', '', lowest_item_price).replace(',', '.')))
+            print(f"id: {id}, price: {price}")
+
             # uložení ceny do databáze pomocí metody ze třídy Database
-            print(result)
             self.database.update_data_aktualni_cena(result[0], id)
 
 
