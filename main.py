@@ -4,6 +4,7 @@ from calculator import Calculator
 from main_window import Ui_mainWindow
 from PyQt6 import QtWidgets, QtGui, QtCore
 import os
+import sys
 
 # Nastavení cesty k databázi
 database_path = os.path.abspath("database.db")
@@ -40,7 +41,6 @@ shortcut.activated.connect(calculator.calculate_price_increase)"""
 
 # Spuštění hlavního okna main_window
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = QtWidgets.QDialog()
     main_window.setupUi(mainWindow)

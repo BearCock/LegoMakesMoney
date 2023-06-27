@@ -21,7 +21,7 @@ class Database:
     def update_data_aktualni_cena(self, result, id_lego_set):
         self.cursor.execute("UPDATE lego_sets SET aktualni_cena = ? WHERE id = ?", (result, id_lego_set))
         self.connection.commit()
-        print("Data updated")
+        print("Data updated\n")
 
     def update_data_rozdil_ceny(self, difference, id_lego_set):
         self.cursor.execute("UPDATE lego_sets SET rozdil_cen = ? WHERE id = ?", (difference, id_lego_set))
