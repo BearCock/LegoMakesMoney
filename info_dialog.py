@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtGui import QFont
 
-
 class InfoDialog(QMessageBox):
     def __init__(self):
         super().__init__()

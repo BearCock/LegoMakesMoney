@@ -15,6 +15,13 @@ lego_database.connect()
 
 # Vytvoření instance třídy Finder a předání instance třídy Database jako argument konstruktoru
 finder = Finder(lego_database)
+
+# Blok úvodního textu do konzole
+print("__________________________________________________")
+print("LegoMakesMoney")
+print("Created by Jiří Mareček, BearCock Technology 2023©")
+print("__________________________________________________\n")
+
 # Získání aktuálních cen produktů z internetu a uložení do databáze
 finder.find()
 
@@ -28,16 +35,6 @@ main_window = Ui_mainWindow(lego_database, calculator, finder)
 calculator.calculate_difference()
 calculator.calculate_total_price()
 calculator.calculate_price_increase()
-
-
-#shortcut = QtWidgets.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key.Key_F5), main_window)
-
-"""# Vytvoření zkratky pro stisk klávesy F5
-shortcut = QtGui.QShortcutEvent
-shortcut.activated.connect(finder.find)
-shortcut.activated.connect(calculator.calculate_difference)
-shortcut.activated.connect(calculator.calculate_total_price)
-shortcut.activated.connect(calculator.calculate_price_increase)"""
 
 # Spuštění hlavního okna main_window
 if __name__ == "__main__":

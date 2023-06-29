@@ -1,6 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox
-import keyboard
 from edit_window import Ui_edit_window
 from add_window import Ui_add_window
 from remove_item_dialog import RemoveDialog
@@ -16,22 +15,37 @@ class Ui_mainWindow(object):
         mainWindow.setObjectName("mainWindow")
         mainWindow.resize(1125, 555)
         mainWindow.setStyleSheet("QDialog {\n"
-            "    background-color: #343640;\n"
-            "    color: #9c9ca1;\n"  # barva textu obsahu tabulky
+            "    background-color: #343640;\n" # barva pozadí okna
             "}")
         self.tableWidget = QtWidgets.QTableWidget(parent=mainWindow)
         self.tableWidget.setGeometry(QtCore.QRect(50, 90, 851, 371))
         self.tableWidget.setMinimumSize(QtCore.QSize(701, 0))
+        self.tableWidget.horizontalHeader().setHighlightSections(False) # odstraní efekt stisknuté bunky v hlavičce tabulky
         self.tableWidget.setStyleSheet("QTableWidget {\n"
-            "    background-color: #444654;\n" 
-            "    color: #9c9ca1;\n" # barva textu obsahu tabulky
+            "    background-color: #444654;\n" # barva pozadí tabulky
+            "    color: #9c9ca1;\n"  # barva textu tabulky
             "}\n"
             "\n"
+           
+           # hlavička tabulky                            
             "QHeaderView::section {\n"
             "    background-color: #686a7d;\n"
             "    color: #cdcdd3;\n"
             "}\n"
-            "")
+             
+            # vybraná buňka v tabulce
+            "QHeaderView::section {\n"
+            "    background-color: #686a7d;\n"
+            "    color: #cdcdd3;\n"
+            "    selection-background-color: transparent;\n"  # transparentní pozadí pro vybranou buňku
+            "}\n"
+             
+           # nastavení pro barvy vybranou položku v tabulce                       
+            "QTableWidget::item:selected {\n"
+            "    selection-background-color: transparent;\n"
+            "    background-color: #F5F5F5;\n"
+            "    color: #3A3737;\n"
+            "}")
 
         # tabulka
         self.tableWidget.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
@@ -83,6 +97,7 @@ class Ui_mainWindow(object):
                     item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 self.tableWidget.setItem(row_number, column_number, item)
 
+        # skryje sloupec s čísly řádků v levé části tabulky.
         self.tableWidget.verticalHeader().setVisible(False)
 
 
@@ -175,6 +190,7 @@ class Ui_mainWindow(object):
 
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
+
 
     def retranslateUi(self, mainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -290,7 +306,7 @@ class Ui_mainWindow(object):
         self.edit_window.show()
 
 
-    # po kliknutí na tlacitko Přidat položku se otevře nové okno pro vložení nové položky
+    # po kliknutí na tlacitko Přidat položku se otevře nové okno pro přidání nové položky
     def show_add_window(self):
         # Vytvoření instance Ui_add_window
         self.add_window = QtWidgets.QDialog()
